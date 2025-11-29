@@ -446,14 +446,8 @@ void CDynamicCursors::calculate(EModeUpdate type) {
 
     // combine edge squash with mode result
     if (edgeResult.stretch.magnitude.x != 1.0 || edgeResult.stretch.magnitude.y != 1.0) {
-        // If mode has no stretch, use edge squash directly
-        if (result.stretch.magnitude.x == 1.0 && result.stretch.magnitude.y == 1.0) {
-            result.stretch = edgeResult.stretch;
-        } else {
-            // It looks weird, I can't get it to look right.
-            result.stretch.magnitude.x = edgeResult.stretch.magnitude.x;
-            result.stretch.magnitude.y = edgeResult.stretch.magnitude.y;
-        }
+        // maybe this will work out nice..?
+        result.stretch = edgeResult.stretch;
     }
 
     if (resultShown.hasDifference(&result, **PTHRESHOLD * (PI / 180.0), 0.01, 0.01)) {
