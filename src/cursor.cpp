@@ -451,8 +451,8 @@ void CDynamicCursors::calculate(EModeUpdate type) {
             result.stretch = edgeResult.stretch;
         } else {
             // Combine stretches by multiplying magnitudes
-            result.stretch.magnitude.x *= edgeResult.stretch.magnitude.x;
-            result.stretch.magnitude.y *= edgeResult.stretch.magnitude.y;
+            result.stretch.magnitude.x += edgeResult.stretch.magnitude.x;
+            result.stretch.magnitude.y += edgeResult.stretch.magnitude.y;
         }
     }
 
