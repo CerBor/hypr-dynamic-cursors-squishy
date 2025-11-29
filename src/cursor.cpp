@@ -450,9 +450,9 @@ void CDynamicCursors::calculate(EModeUpdate type) {
         if (result.stretch.magnitude.x == 1.0 && result.stretch.magnitude.y == 1.0) {
             result.stretch = edgeResult.stretch;
         } else {
-            // Combine stretches by multiplying magnitudes
-            result.stretch.magnitude.x += edgeResult.stretch.magnitude.x;
-            result.stretch.magnitude.y += edgeResult.stretch.magnitude.y;
+            // It looks weird, I can't get it to look right.
+            result.stretch.magnitude.x = edgeResult.stretch.magnitude.x;
+            result.stretch.magnitude.y = edgeResult.stretch.magnitude.y;
         }
     }
 
