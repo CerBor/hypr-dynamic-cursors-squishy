@@ -1,4 +1,6 @@
 #include "../globals.hpp"
+#include <sstream> // required so we don't "unprivate" sstream before including cursor.hpp
+#include <hyprland/src/managers/eventLoop/EventLoopTimer.hpp> // required so we don't "unprivate" chrono before including cursor.hpp
 #include "../cursor.hpp"
 #include "config.hpp"
 

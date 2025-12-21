@@ -7,6 +7,7 @@
 
 #include <hyprland/src/managers/eventLoop/EventLoopTimer.hpp> // required so we don't "unprivate" chrono
 #include <hyprutils/utils/ScopeGuard.hpp>
+#include <sstream> // required so we don't "unprivate" sstream
 
 #define private public
 #include <hyprland/src/managers/CursorManager.hpp>

@@ -202,7 +202,7 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
             (void*) &hkSetCursorFromName
         );
         g_pSetCursorSurfaceHook = hook( // setCursorSurface
-            "_ZN14CCursorManager16setCursorSurfaceEN9Hyprutils6Memory14CSharedPointerI10CWLSurfaceEERKNS0_4Math8Vector2DE",
+            "_ZN14CCursorManager16setCursorSurfaceEN9Hyprutils6Memory14CSharedPointerIN7Desktop4View10CWLSurfaceEEERKNS0_4Math8Vector2DE",
             (void*) &hkSetCursorSurface
         );
         g_pUpdateThemeHook = hook( // updateThemes

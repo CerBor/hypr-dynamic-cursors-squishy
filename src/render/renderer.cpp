@@ -2,6 +2,8 @@
 #include <GLES2/gl2.h>
 #include <GLES3/gl32.h>
 #include <hyprland/src/defines.hpp> // don't unprivate stuff in here
+#include <sstream> // required so we don't "unprivate" sstream
+#include <chrono> // required so we don't "unprivate" chrono
 
 #define private public
 #include <hyprland/src/render/OpenGL.hpp>
