@@ -16,7 +16,7 @@
 #include "config/config.hpp"
 #include "helpers/time/Time.hpp"
 #include "render/Renderer.hpp"
-#include "src/debug/Log.hpp"
+#include <hyprland/src/debug/log/Logger.hpp>
 #include "src/managers/PointerManager.hpp"
 #include "src/version.h"
 
@@ -62,9 +62,9 @@ void hkSetCursorFromName(void* thisptr, const std::string& name) {
     (*(origSetCusorFromName)g_pSetCursorFromNameHook->m_original)(thisptr, name);
 }
 
-typedef void (*origSetCursorSurface)(void*, SP<CWLSurface>, const Vector2D&);
+typedef void (*origSetCursorSurface)(void*, SP<Desktop::View::CWLSurface>, const Vector2D&);
 inline CFunctionHook* g_pSetCursorSurfaceHook = nullptr;
-void hkSetCursorSurface(void* thisptr, SP<CWLSurface> surf, const Vector2D& hotspot) {
+void hkSetCursorSurface(void* thisptr, SP<Desktop::View::CWLSurface> surf, const Vector2D& hotspot) {
     if (isEnabled()) g_pDynamicCursors->unsetShape();
     (*(origSetCursorSurface)g_pSetCursorSurfaceHook->m_original)(thisptr, surf, hotspot);
 }
@@ -89,19 +89,19 @@ void hkUpdateTheme(void* thisptr) {
  * so "fine, I'll do it myself"
  */
 CFunctionHook* hook(const char* signature, void* function) {
-    Debug::log(LOG, "[dynamic-cursors] starting to hook for {}", signature);
+    Log::logger->log(Log::INFO, "[dynamic-cursors] starting to hook for {}", signature);
 
     void* addr = dlsym(nullptr, signature);
     if (addr == NULL) {
-        Debug::log(ERR, "[dynamic-cursors] failed to hook, symbol not found");
+        Log::logger->log(Log::ERR, "[dynamic-cursors] failed to hook, symbol not found");
         throw std::runtime_error("symbol not found, are you up-to-date?");
     }
 
     auto hook = HyprlandAPI::createFunctionHook(PHANDLE, addr, function);
 
-    Debug::log(LOG, "[dynamic-cursors] trying to hook {:p}", addr);
+    Log::logger->log(Log::INFO, "[dynamic-cursors] trying to hook {:p}", addr);
     if (!hook->hook()) {
-        Debug::log(ERR, "[dynamic-cursors] could not hook, hooking failed");
+        Log::logger->log(Log::ERR, "[dynamic-cursors] could not hook, hooking failed");
         throw std::runtime_error("hooking failed, are you on x86_64?");
     }
 
@@ -210,11 +210,11 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
             (void*) &hkUpdateTheme
         );
     } catch (std::exception& e) {
-        Debug::log(ERR, "[dynamic-cursors] failed to hook, {}", e.what());
+        Log::logger->log(Log::ERR, "[dynamic-cursors] failed to hook, {}", e.what());
         HyprlandAPI::addNotification(PHANDLE, std::format("[dynamic-cursors] cannot load, {}", e.what()), CHyprColor{1.0, 0.2, 0.2, 1.0}, 5000);
         throw e;
     } catch (...) {
-        Debug::log(ERR, "[dynamic-cursors] failed to hook for unknown reason");
+        Log::logger->log(Log::ERR, "[dynamic-cursors] failed to hook for unknown reason");
         HyprlandAPI::addNotification(PHANDLE, "[dynamic-cursors] cannot load, unknown error with hooks!", CHyprColor{1.0, 0.2, 0.2, 1.0}, 5000);
         throw std::runtime_error("hooks failed for unknown reason");
     }
